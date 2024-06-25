@@ -6,7 +6,7 @@
 /*   By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 13:47:13 by yohurteb          #+#    #+#             */
-/*   Updated: 2024/06/23 11:26:47 by yohurteb         ###   ########.fr       */
+/*   Updated: 2024/06/25 15:58:04 by yohurteb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	check_args(int argc, char **argv)
 		perror("zsh");
 		exit(1);
 	}
-	fd = open(argv[4], O_RDONLY);
+	fd = open(argv[4], O_RDONLY | O_CREAT);
 	if (fd == -1)
 	{
 		perror("zsh");

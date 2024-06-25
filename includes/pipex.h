@@ -6,7 +6,7 @@
 /*   By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 13:24:12 by yohurteb          #+#    #+#             */
-/*   Updated: 2024/06/24 15:10:56 by yohurteb         ###   ########.fr       */
+/*   Updated: 2024/06/25 15:26:17 by yohurteb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strjoin(const char *s1, const char *s2);
 
 int	first_part(char **argv, char **env, int pipefd[]);
+
+void	second_part(char **argv, char **env, int pipefd[], int pid);
 
 char *get_path(char **env);
 
