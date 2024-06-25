@@ -6,11 +6,27 @@
 /*   By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:12:16 by yohurteb          #+#    #+#             */
-/*   Updated: 2024/06/24 17:30:38 by yohurteb         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:02:36 by yohurteb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	free_path_and_cmd(char **path, char **cmd)
+{
+	int	i;
+
+	i = 0;
+	while (path[i])
+		free(path[i++]);
+	free(path);
+	path = NULL;
+	i = 0;
+	while (cmd[i])
+		free(cmd[i++]);
+	free(cmd);
+	cmd = NULL;
+}
 
 char	*find_cmd(char **path, char **cmd)
 {
@@ -29,29 +45,12 @@ char	*find_cmd(char **path, char **cmd)
 	return (NULL);
 }
 
-int	exec_cmd(int pipefd[], char **argv, char **cmd1, char **path_split)
-{
-	int	fd;
-
-	close(pipefd[0]);
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
-	{
-		free_split(path_split);
-		free_split(cmd1);
-		return (1);
-	}
-	dup2(fd, STDIN_FILENO);
-	dup2(pipefd[1], STDOUT_FILENO);
-	//close(fd);
-	return (0);
-}
-
 int	first_part(char **argv, char **env, int	pipefd[])
 {
 	char	**cmd1;
 	char	**path_split;
 	char	*path;
+	int		fd;
 
 	cmd1 = ft_split(argv[2], ' ');
 	if (!cmd1)
@@ -61,8 +60,14 @@ int	first_part(char **argv, char **env, int	pipefd[])
 	if (!path_split)
 		return (free_split(cmd1), 1);
 	path = find_cmd(path_split, cmd1);
-	if (exec_cmd(pipefd, argv, cmd1, path_split) == 1)
-		return (1);
-	execve(path, &cmd1[1], env);
+	close(pipefd[0]);
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+		return (free_path_and_cmd(path_split, cmd1), 1);
+	dup2(fd, STDIN_FILENO);
+	dup2(pipefd[1], STDOUT_FILENO);
+	close(fd);
+	close(pipefd[1]);
+	execve(path, &cmd1[0], env);
 	return (0);
 }
