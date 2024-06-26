@@ -6,11 +6,26 @@
 /*   By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:12:16 by yohurteb          #+#    #+#             */
-/*   Updated: 2024/06/26 11:44:41 by yohurteb         ###   ########.fr       */
+/*   Updated: 2024/06/26 16:27:16 by yohurteb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+char	*check_abs_path(char **cmd)
+{
+	char	*verif_path;
+
+	verif_path = NULL;
+	if (access(cmd[0], X_OK) == 0)
+	{
+		verif_path = ft_strdup(cmd[0]);
+		if (!verif_path)
+			return (NULL);
+		return (verif_path);
+	}
+	return (verif_path);
+}
 
 char	*find_cmd(char **path, char **cmd)
 {
@@ -19,12 +34,14 @@ char	*find_cmd(char **path, char **cmd)
 	char	*tmp;
 
 	i = 0;
-	verif_path = NULL;
+	verif_path = check_abs_path(cmd);
+	if (verif_path)
+		return (verif_path);
 	while (path[i])
 	{
 		if (verif_path)
 			free(verif_path);
-		verif_path = ft_strjoin(path[i], "/");
+		verif_path = ft_strjoin(path[i++], "/");
 		if (!verif_path)
 			return (NULL);
 		tmp = verif_path;
@@ -34,7 +51,6 @@ char	*find_cmd(char **path, char **cmd)
 			return (NULL);
 		if (access(verif_path, X_OK) == 0)
 			return (verif_path);
-		i++;
 	}
 	free(verif_path);
 	return (NULL);
@@ -52,7 +68,7 @@ char	*make_split(char **cmd, int pipefd[], char **env, char **path_split)
 	path = find_cmd(path_split, cmd);
 	if (!path)
 	{
-		free_all(path, NULL, path_split);
+		free_all(NULL, cmd, path_split);
 		close(pipefd[1]);
 		perror("command not found");
 		exit(1);
