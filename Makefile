@@ -6,7 +6,7 @@
 #    By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/19 13:24:18 by yohurteb          #+#    #+#              #
-#    Updated: 2024/06/24 15:14:02 by yohurteb         ###   ########.fr        #
+#    Updated: 2024/06/26 10:33:45 by yohurteb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ CFLAGS = -Wall -Werror -Wextra -I includes/
 SRCS = \
 	src/main.c \
 	src/check_args.c \
-	src/first_part.c \
+	src/fork.c \
+	src/free.c \
 	utils/ft_split.c \
 	printf/ft_printf.c \
 	printf/ft_nb_base.c \

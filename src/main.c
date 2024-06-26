@@ -6,24 +6,11 @@
 /*   By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:47:18 by yohurteb          #+#    #+#             */
-/*   Updated: 2024/06/25 16:12:31 by yohurteb         ###   ########.fr       */
+/*   Updated: 2024/06/26 10:32:06 by yohurteb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void	free_split(char **tab)
-{
-	int	i;
-
-	i = 0;
-	if (!tab)
-		return ;
-	while (tab[i])
-		free(tab[i++]);
-	free(tab);
-	tab = NULL;
-}
 
 char *get_path(char **env)
 {
@@ -50,7 +37,7 @@ int	main(int argc, char **argv, char **env)
 		return (perror("error pipe"), 1);
 	pid = fork();
 	if (pid == -1)
-		return (perror("zsh"), 1);
+		return (perror("fork failed"), 1);
 	if (pid == 0)
 	{
 		if (first_part(argv, env, pipefd) == 1)
@@ -59,7 +46,7 @@ int	main(int argc, char **argv, char **env)
 	dup2(pipefd[0], STDIN_FILENO);
 	pid = fork();
 	if (pid == -1)
-		return (perror("zsh"), 1);
+		return (perror("fork 2 failed"), 1);
 	second_part(argv, env, pipefd, pid);
 	close(pipefd[0]);
 	close(pipefd[1]);

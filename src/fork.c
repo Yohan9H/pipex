@@ -1,48 +1,63 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   first_part.c                                       :+:      :+:    :+:   */
+/*   fork.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:12:16 by yohurteb          #+#    #+#             */
-/*   Updated: 2024/06/25 16:03:45 by yohurteb         ###   ########.fr       */
+/*   Updated: 2024/06/26 11:44:41 by yohurteb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	free_path_and_cmd(char **path, char **cmd)
-{
-	int	i;
-
-	i = 0;
-	while (path[i])
-		free(path[i++]);
-	free(path);
-	path = NULL;
-	i = 0;
-	while (cmd[i])
-		free(cmd[i++]);
-	free(cmd);
-	cmd = NULL;
-}
-
 char	*find_cmd(char **path, char **cmd)
 {
 	int		i;
 	char	*verif_path;
+	char	*tmp;
 
 	i = 0;
+	verif_path = NULL;
 	while (path[i])
 	{
+		if (verif_path)
+			free(verif_path);
 		verif_path = ft_strjoin(path[i], "/");
-		verif_path = ft_strjoin(verif_path, cmd[0]);
+		if (!verif_path)
+			return (NULL);
+		tmp = verif_path;
+		verif_path = ft_strjoin(tmp, cmd[0]);
+		free(tmp);
+		if (!verif_path)
+			return (NULL);
 		if (access(verif_path, X_OK) == 0)
 			return (verif_path);
 		i++;
 	}
+	free(verif_path);
 	return (NULL);
+}
+
+char	*make_split(char **cmd, int pipefd[], char **env, char **path_split)
+{
+	char *path;
+
+	close(pipefd[0]);
+	path = get_path(env);
+	path_split = ft_split(path, ':');
+	if (!path_split)
+		return (free_split(cmd), NULL);
+	path = find_cmd(path_split, cmd);
+	if (!path)
+	{
+		free_all(path, NULL, path_split);
+		close(pipefd[1]);
+		perror("command not found");
+		exit(1);
+	}
+	return (path);
 }
 
 int	first_part(char **argv, char **env, int	pipefd[])
@@ -52,23 +67,20 @@ int	first_part(char **argv, char **env, int	pipefd[])
 	char	*path;
 	int		fd;
 
-	close(pipefd[0]);
 	cmd1 = ft_split(argv[2], ' ');
 	if (!cmd1)
 		return (1);
-	path = get_path(env);
-	path_split = ft_split(path, ':');
-	if (!path_split)
-		return (free_split(cmd1), 1);
-	path = find_cmd(path_split, cmd1);
+	path_split = NULL;
+	path = make_split(cmd1, pipefd, env, path_split);
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
-		return (free_path_and_cmd(path_split, cmd1), 1);
+		return (free_all(path, cmd1, path_split), 1);
 	dup2(fd, STDIN_FILENO);
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(fd);
 	close(pipefd[1]);
 	execve(path, cmd1, env);
+	free_all(path, cmd1, path_split);
 	return (0);
 }
 
@@ -84,18 +96,16 @@ void	second_part(char **argv, char **env, int pipefd[], int pid)
 		cmd2 = ft_split(argv[3], ' ');
 		if (!cmd2)
 			exit(1);
-		path = get_path(env);
-		path_split = ft_split(path, ':');
-		if (!path_split)
-			return (free_split(cmd2));
-		path = find_cmd(path_split, cmd2);
+		path_split = NULL;
+		path = make_split(cmd2, pipefd, env, path_split);
 		fd = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		if (fd == -1)
-			return (free_path_and_cmd(path_split, cmd2));
+			return (free_all(path, cmd2, path_split));
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 		close(pipefd[1]);
 		execve(path, cmd2, env);
+		free_all(path, cmd2, path_split);
 		exit(1);
 	}
 }

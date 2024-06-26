@@ -1,36 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_args.c                                       :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/20 13:47:13 by yohurteb          #+#    #+#             */
-/*   Updated: 2024/06/26 11:11:01 by yohurteb         ###   ########.fr       */
+/*   Created: 2024/06/26 10:31:56 by yohurteb          #+#    #+#             */
+/*   Updated: 2024/06/26 10:54:18 by yohurteb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	check_args(int argc, char **argv)
+void	free_split(char **tab)
 {
-	int fd;
+	int	i;
 
-	if (argc < 5 || argc > 5)
-	{
-		write(2, "Invalid Argument\n", 17);
-		exit(1);
-	}
-	if (access(argv[1], R_OK) == -1)
-	{
-		perror("zs");
-		exit(1);
-	}
-	fd = open(argv[4], O_RDONLY | O_CREAT);
-	if (fd == -1)
-	{
-		perror("zsh");
-		exit(1);
-	}
-	close(fd);
+	i = 0;
+	if (!tab)
+		return ;
+	while (tab[i])
+		free(tab[i++]);
+	free(tab);
+	tab = NULL;
+}
+
+void	free_all(char *path, char **cmd, char **path_split)
+{
+	int	i;
+
+	i = 0;
+	if (path)
+		free(path);
+	i = 0;
+	if (cmd)
+		free_split(cmd);
+	i = 0;
+	if (path_split)
+		free_split(path_split);
 }
