@@ -6,7 +6,7 @@
 /*   By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 13:24:12 by yohurteb          #+#    #+#             */
-/*   Updated: 2024/06/26 10:50:59 by yohurteb         ###   ########.fr       */
+/*   Updated: 2024/06/27 13:13:21 by yohurteb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <sys/wait.h>
 
 void	check_args(int argc, char **argv);
+
+void	check_env(char **av, char **env, int pipefd[]);
 
 char	**ft_split(char const *s, char c);
 
@@ -42,6 +44,8 @@ char	*ft_strjoin(const char *s1, const char *s2);
 int		first_part(char **argv, char **env, int pipefd[]);
 
 void	second_part(char **argv, char **env, int pipefd[], int pid);
+
+void	fork_without_env(char **argv, char **cmd1, char **cmd2, int pipefd[]);
 
 char 	*get_path(char **env);
 

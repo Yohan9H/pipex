@@ -6,7 +6,7 @@
 /*   By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:12:16 by yohurteb          #+#    #+#             */
-/*   Updated: 2024/06/26 16:27:16 by yohurteb         ###   ########.fr       */
+/*   Updated: 2024/06/27 12:06:13 by yohurteb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,18 @@ int	first_part(char **argv, char **env, int	pipefd[])
 	char	*path;
 	int		fd;
 
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+		return (1);
+	dup2(fd, STDIN_FILENO);
+	dup2(pipefd[1], STDOUT_FILENO);
+	close(pipefd[1]);
+	close(fd);
 	cmd1 = ft_split(argv[2], ' ');
 	if (!cmd1)
 		return (1);
 	path_split = NULL;
 	path = make_split(cmd1, pipefd, env, path_split);
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
-		return (free_all(path, cmd1, path_split), 1);
-	dup2(fd, STDIN_FILENO);
-	dup2(pipefd[1], STDOUT_FILENO);
-	close(fd);
-	close(pipefd[1]);
 	execve(path, cmd1, env);
 	free_all(path, cmd1, path_split);
 	return (0);
@@ -109,17 +109,17 @@ void	second_part(char **argv, char **env, int pipefd[], int pid)
 
 	if (pid == 0)
 	{
+		fd = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		if (fd == -1)
+			exit(1);
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+		close(pipefd[1]);
 		cmd2 = ft_split(argv[3], ' ');
 		if (!cmd2)
 			exit(1);
 		path_split = NULL;
 		path = make_split(cmd2, pipefd, env, path_split);
-		fd = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-		if (fd == -1)
-			return (free_all(path, cmd2, path_split));
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
-		close(pipefd[1]);
 		execve(path, cmd2, env);
 		free_all(path, cmd2, path_split);
 		exit(1);

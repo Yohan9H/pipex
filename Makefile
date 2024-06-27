@@ -6,7 +6,7 @@
 #    By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/19 13:24:18 by yohurteb          #+#    #+#              #
-#    Updated: 2024/06/26 10:33:45 by yohurteb         ###   ########.fr        #
+#    Updated: 2024/06/27 11:50:13 by yohurteb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRCS = \
 	src/main.c \
 	src/check_args.c \
 	src/fork.c \
+	src/fork_without_env.c \
 	src/free.c \
 	utils/ft_split.c \
 	printf/ft_printf.c \

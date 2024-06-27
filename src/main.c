@@ -6,7 +6,7 @@
 /*   By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:47:18 by yohurteb          #+#    #+#             */
-/*   Updated: 2024/06/26 10:32:06 by yohurteb         ###   ########.fr       */
+/*   Updated: 2024/06/27 13:13:23 by yohurteb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,16 @@ int	main(int argc, char **argv, char **env)
 	int		pipefd[2];
 	pid_t	pid;
 
-	(void)argc;
 	check_args(argc, argv);
 	if (pipe(pipefd) == -1)
 		return (perror("error pipe"), 1);
+	check_env(argv, env, pipefd);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork failed"), 1);
 	if (pid == 0)
-	{
 		if (first_part(argv, env, pipefd) == 1)
 			return (1);
-	}
 	dup2(pipefd[0], STDIN_FILENO);
 	pid = fork();
 	if (pid == -1)
