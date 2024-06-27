@@ -6,13 +6,13 @@
 /*   By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:12:16 by yohurteb          #+#    #+#             */
-/*   Updated: 2024/06/27 12:06:13 by yohurteb         ###   ########.fr       */
+/*   Updated: 2024/06/27 14:07:07 by yohurteb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*check_abs_path(char **cmd)
+static char	*check_abs_path(char **cmd)
 {
 	char	*verif_path;
 
@@ -27,7 +27,7 @@ char	*check_abs_path(char **cmd)
 	return (verif_path);
 }
 
-char	*find_cmd(char **path, char **cmd)
+static char	*find_cmd(char **path, char **cmd)
 {
 	int		i;
 	char	*verif_path;
@@ -56,9 +56,9 @@ char	*find_cmd(char **path, char **cmd)
 	return (NULL);
 }
 
-char	*make_split(char **cmd, int pipefd[], char **env, char **path_split)
+static char	*make_split(char **cmd, int pipefd[], char **env, char **path_split)
 {
-	char *path;
+	char	*path;
 
 	close(pipefd[0]);
 	path = get_path(env);
@@ -76,7 +76,7 @@ char	*make_split(char **cmd, int pipefd[], char **env, char **path_split)
 	return (path);
 }
 
-int	first_part(char **argv, char **env, int	pipefd[])
+int	first_part(char **argv, char **env, int pipefd[])
 {
 	char	**cmd1;
 	char	**path_split;

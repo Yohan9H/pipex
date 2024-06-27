@@ -6,16 +6,16 @@
 /*   By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 11:49:27 by yohurteb          #+#    #+#             */
-/*   Updated: 2024/06/27 13:18:36 by yohurteb         ###   ########.fr       */
+/*   Updated: 2024/06/27 14:07:30 by yohurteb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void		error_pid(void)
+static void	error_pid(void)
 {
-		perror("fork 2 failed");
-		exit(1);
+	perror("fork 2 failed");
+	exit(1);
 }
 
 static	void	first_no_env(char **av, char **cmd1, char **cmd2, int pipe[])

@@ -6,13 +6,13 @@
 /*   By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:47:18 by yohurteb          #+#    #+#             */
-/*   Updated: 2024/06/27 13:13:23 by yohurteb         ###   ########.fr       */
+/*   Updated: 2024/06/27 14:06:25 by yohurteb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char *get_path(char **env)
+char	*get_path(char **env)
 {
 	size_t	j;
 
