@@ -6,7 +6,7 @@
 #    By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/19 13:24:18 by yohurteb          #+#    #+#              #
-#    Updated: 2024/06/27 11:50:13 by yohurteb         ###   ########.fr        #
+#    Updated: 2024/06/27 14:42:59 by yohurteb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,6 @@ SRCS = \
 	src/fork_without_env.c \
 	src/free.c \
 	utils/ft_split.c \
-	printf/ft_printf.c \
-	printf/ft_nb_base.c \
 	utils/ft_strdup.c \
 	utils/ft_strlen.c \
 	utils/ft_strncmp.c \
