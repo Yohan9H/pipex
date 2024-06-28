@@ -6,11 +6,18 @@
 /*   By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:31:56 by yohurteb          #+#    #+#             */
-/*   Updated: 2024/06/26 10:54:18 by yohurteb         ###   ########.fr       */
+/*   Updated: 2024/06/28 10:55:04 by yohurteb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	exit_point(char **cmd)
+{
+	write(2, "error '.' is not valid\n", 23);
+	free_split(cmd);
+	exit(1);
+}
 
 void	free_split(char **tab)
 {

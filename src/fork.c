@@ -6,7 +6,7 @@
 /*   By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:12:16 by yohurteb          #+#    #+#             */
-/*   Updated: 2024/06/27 14:07:07 by yohurteb         ###   ########.fr       */
+/*   Updated: 2024/06/28 10:56:22 by yohurteb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static char	*make_split(char **cmd, int pipefd[], char **env, char **path_split)
 	char	*path;
 
 	close(pipefd[0]);
+	if (cmd[0][0] == '.')
+		return (NULL);
 	path = get_path(env);
 	path_split = ft_split(path, ':');
 	if (!path_split)
@@ -95,6 +97,8 @@ int	first_part(char **argv, char **env, int pipefd[])
 		return (1);
 	path_split = NULL;
 	path = make_split(cmd1, pipefd, env, path_split);
+	if (path == NULL)
+		exit_point(cmd1);
 	execve(path, cmd1, env);
 	free_all(path, cmd1, path_split);
 	return (0);
@@ -120,6 +124,8 @@ void	second_part(char **argv, char **env, int pipefd[], int pid)
 			exit(1);
 		path_split = NULL;
 		path = make_split(cmd2, pipefd, env, path_split);
+		if (path == NULL)
+			exit_point(cmd2);
 		execve(path, cmd2, env);
 		free_all(path, cmd2, path_split);
 		exit(1);

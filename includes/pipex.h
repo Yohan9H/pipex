@@ -6,7 +6,7 @@
 /*   By: yohurteb <yohurteb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 13:24:12 by yohurteb          #+#    #+#             */
-/*   Updated: 2024/06/27 14:04:09 by yohurteb         ###   ########.fr       */
+/*   Updated: 2024/06/28 10:55:56 by yohurteb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	second_part(char **argv, char **env, int pipefd[], int pid);
 void	fork_without_env(char **argv, char **cmd1, char **cmd2, int pipefd[]);
 
 char	*get_path(char **env);
+
+void	exit_point(char **cmd);
 
 void	free_split(char **tab);
 
